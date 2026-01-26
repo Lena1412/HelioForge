@@ -25,6 +25,11 @@ dev = [
 ]
 view = ["pygame>=2.5"]
 notebook = ["jupyter", "matplotlib>=3.7"]
+docs = [
+  "mkdocs>=1.5",
+  "mkdocstrings[python]>=0.24",
+  "mkdocs-material>=9.5",
+]
 
 [project.scripts]
 cosmoview = "cosmoview.cli:main"
