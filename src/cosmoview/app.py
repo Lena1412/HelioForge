@@ -1,6 +1,21 @@
 # src/cosmoview/app.py
 from __future__ import annotations
 
+"""cosmoview.app
+
+Main pygame application loop for CosmoView.
+
+CosmoView is a lightweight viewer for helioforge simulations. It focuses on
+smooth rendering and simple interaction:
+- pause / play,
+- time scaling (faster/slower),
+- zoom and pan,
+- optional labels and an on-screen stats overlay.
+
+The simulation itself is advanced using fixed-size substeps to keep motion
+stable even when the time scale is high.
+"""
+
 import math
 from dataclasses import dataclass, field
 
@@ -16,6 +31,17 @@ from .ui import StatsPanel
 
 @dataclass
 class ViewState:
+    """Viewer state that controls how the scene is rendered and advanced.
+
+    Attributes:
+        paused: Whether simulation stepping is paused.
+        time_scale: Multiplier converting real seconds to simulated seconds.
+        zoom: Zoom factor applied to the world-to-screen scaling.
+        cam_px: Camera center in screen pixels (used as the origin of the world).
+        show_labels: Whether planet names are drawn.
+        show_stats: Whether the stats overlay is drawn.
+    """
+
     paused: bool = False
     time_scale: float = 20000.0
     zoom: float = 1.0
@@ -25,6 +51,15 @@ class ViewState:
 
 
 def _build_demo_system(mode: str) -> SolarSystem:
+    """Create a demo SolarSystem for a given mode.
+
+    Args:
+        mode: "solar" to load an approximate Solar System preset, otherwise a
+            deterministic generated system is used.
+
+    Returns:
+        A `SolarSystem` suitable for visualization.
+    """
     if mode == "solar":
         sun, planets = make_solar_system()
         return SolarSystem(central_body=sun, planets=planets)
@@ -35,10 +70,25 @@ def _build_demo_system(mode: str) -> SolarSystem:
 
 
 def _make_font() -> pygame.font.Font:
+    """Create a UI font with a small fallback list."""
     return pygame.font.SysFont(["Inter", "Segoe UI", "DejaVu Sans", "Arial", "consolas"], 16)
 
 
 def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str = "solar") -> None:
+    """Run the CosmoView pygame window.
+
+    Args:
+        width: Window width in pixels.
+        height: Window height in pixels.
+        fps_limit: Target frame rate.
+        mode: Demo system mode ("solar" or "random").
+
+    Notes:
+        The rendering pipeline uses a higher-resolution offscreen surface
+        (`render_scale`) and then downsamples via `smoothscale`. This acts like
+        a simple supersampling anti-aliasing pass and helps motion appear
+        smoother (especially for thin orbit lines).
+    """
     pygame.display.init()
     pygame.font.init()
     pygame.display.set_caption("CosmoView")
@@ -54,33 +104,42 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
     view.cam_px = pygame.Vector2(width / 2, height / 2)
 
     def reset_sim() -> Simulation:
+        """Build a fresh simulation instance for the current mode."""
         return Simulation(_build_demo_system(mode))
 
     sim = reset_sim()
 
     def do_reset() -> None:
+        """Reset the current simulation (UI action)."""
         nonlocal sim
         sim = reset_sim()
 
     def slower() -> None:
+        """Decrease the simulation time scale (UI action)."""
         view.time_scale = max(0.1, view.time_scale / 1.25)
 
     def faster() -> None:
+        """Increase the simulation time scale (UI action)."""
         view.time_scale *= 1.25
 
     def zoom_out() -> None:
+        """Zoom out (UI action)."""
         view.zoom = max(0.1, view.zoom / 1.1)
 
     def zoom_in() -> None:
+        """Zoom in (UI action)."""
         view.zoom *= 1.1
 
     def toggle_labels() -> None:
+        """Toggle planet name labels (UI action)."""
         view.show_labels = not view.show_labels
 
     def toggle_stats() -> None:
+        """Toggle the stats overlay (UI action)."""
         view.show_stats = not view.show_stats
 
     def toggle_pause() -> None:
+        """Toggle simulation pause state (UI action)."""
         view.paused = not view.paused
 
     bottom_h = 78
@@ -103,6 +162,7 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
     y = bar_rect.y + (bar_rect.height - btn) // 2
 
     def rects_from(x0: int, n: int) -> list[pygame.Rect]:
+        """Generate `n` button rects in a row starting at x0."""
         rs = []
         x = x0
         for _ in range(n):
@@ -121,13 +181,17 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
         IconButton(center_rects[0], "rew", slower, "Slower", shortcut_hint="-"),
         IconButton(center_rects[1], "pause", toggle_pause, "Play / Pause", shortcut_hint="SPACE"),
         IconButton(center_rects[2], "ff", faster, "Faster", shortcut_hint="+"),
-        IconButton(right_rects[0], "zoom_out", zoom_out, "Zoom out", shortcut_hint="Wheel ↓"),
-        IconButton(right_rects[1], "zoom_in", zoom_in, "Zoom in", shortcut_hint="Wheel ↑"),
+        IconButton(right_rects[0], "zoom_out", zoom_out, "Zoom out", shortcut_hint="Wheel down"),
+        IconButton(right_rects[1], "zoom_in", zoom_in, "Zoom in", shortcut_hint="Wheel up"),
     ]
 
+    # Maximum simulated seconds per substep. Large time_scale values can
+    # otherwise cause very large dt jumps which look like teleportation.
     max_sim_step = 90000.0
     max_substeps = 240
 
+    # Render to an offscreen surface with a higher resolution and downsample
+    # for smoother orbit lines and circles.
     render_scale = 2
     world = pygame.Surface((width * render_scale, height * render_scale)).convert()
 
@@ -171,6 +235,7 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
                 elif event.y < 0:
                     zoom_out()
 
+        # Simple camera panning with arrow keys (screen-space).
         keys = pygame.key.get_pressed()
         pan_speed = 400.0 * dt_real
         if keys[pygame.K_LEFT]:
@@ -185,6 +250,8 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
         if not view.paused:
             dt_sim_total = dt_real * view.time_scale
             if dt_sim_total > 0:
+                # Substepping prevents very large dt values from skipping too far
+                # around an orbit in a single frame.
                 n = max(1, int(math.ceil(dt_sim_total / max_sim_step)))
                 if n > max_substeps:
                     n = max_substeps
@@ -205,6 +272,8 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
             orbit_r_px = max(1.0, scale.meters_to_pixels_radius(p.distance_m, view.zoom)) * render_scale
             pygame.draw.circle(world, (40, 40, 65), (int(center.x), int(center.y)), int(orbit_r_px), width=orbit_width)
 
+            # Convert the planet's model-space position to a unit direction and
+            # then scale by the orbit radius in pixels.
             x_m, y_m = p.position_m()
             r_m = math.hypot(x_m, y_m)
             ux, uy = (x_m / r_m, y_m / r_m) if r_m > 0 else (0.0, 0.0)
@@ -255,6 +324,7 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
 
         hovered_tooltip: str | None = None
         for b in buttons:
+            # Swap the icon for the central play/pause button based on state.
             if b.kind in ("play", "pause"):
                 b.kind = "pause" if not view.paused else "play"
                 b.toggled = view.paused

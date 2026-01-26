@@ -1,11 +1,26 @@
 # src/cosmoview/ui.py
 from __future__ import annotations
 
+"""cosmoview.ui
+
+Small UI components for CosmoView.
+
+Currently this module contains the `StatsPanel`, a compact overlay showing
+simulation and view state (time, speed, zoom, fps, etc.).
+"""
+
 import pygame
 
 
 class StatsPanel:
+    """A small text panel rendered in the top-left corner."""
+
     def __init__(self, font: pygame.font.Font):
+        """Create the panel.
+
+        Args:
+            font: Font used to render all text in the panel.
+        """
         self.font = font
 
     def draw(
@@ -20,6 +35,18 @@ class StatsPanel:
         show_labels: bool,
         top_left: tuple[int, int] = (14, 14),
     ) -> None:
+        """Draw the stats overlay.
+
+        Args:
+            screen: Target surface to draw onto.
+            paused: Whether the simulation is currently paused.
+            sim_time_s: Simulation time in seconds.
+            time_scale: Time multiplier (simulation seconds per real second).
+            zoom: Current view zoom factor.
+            fps: Frames per second reported by the render loop.
+            show_labels: Whether planet labels are enabled.
+            top_left: Pixel position of the panel's top-left corner.
+        """
         state = "Paused" if paused else "Running"
         lines = [
             state,
