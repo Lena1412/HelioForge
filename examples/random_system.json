@@ -1,0 +1,70 @@
+{
+  "central_body": {
+    "name": "DemoStar",
+    "mass_kg": 1.2e+30,
+    "radius_m": 700000000.0,
+    "luminosity_w": 2e+26
+  },
+  "planets": [
+    {
+      "name": "Planet 1",
+      "kind": "rocky",
+      "mass_kg": 2.8759602489175434e+24,
+      "radius_m": 5024744.731612929,
+      "distance_m": 42066812206.692184,
+      "phase_rad": 3.365256478716166,
+      "period_s": 6057532.984080828,
+      "orbital_speed_mps": 43633.86498622231
+    },
+    {
+      "name": "Planet 2",
+      "kind": "rocky",
+      "mass_kg": 1.4264757851171938e+24,
+      "radius_m": 6010671.836467378,
+      "distance_m": 114800388550.96143,
+      "phase_rad": 2.683626480514673,
+      "period_s": 27308724.770398047,
+      "orbital_speed_mps": 26413.247805104107
+    },
+    {
+      "name": "Planet 3",
+      "kind": "rocky",
+      "mass_kg": 5.018443974456842e+24,
+      "radius_m": 4489388.786931833,
+      "distance_m": 276229834042.11957,
+      "phase_rad": 2.2570846727696234,
+      "period_s": 101927707.69597092,
+      "orbital_speed_mps": 17027.78639773832
+    },
+    {
+      "name": "Planet 4",
+      "kind": "gas_giant",
+      "mass_kg": 1.9899506101075844e+26,
+      "radius_m": 67237986.19607079,
+      "distance_m": 614837553096.166,
+      "phase_rad": 0.5986076757000953,
+      "period_s": 338475284.3592139,
+      "orbital_speed_mps": 11413.354116031243
+    },
+    {
+      "name": "Planet 5",
+      "kind": "ice_giant",
+      "mass_kg": 5.2504028536407445e+25,
+      "radius_m": 21753735.24594448,
+      "distance_m": 1565293063598.961,
+      "phase_rad": 2.828733368502968,
+      "period_s": 1374927741.2211864,
+      "orbital_speed_mps": 7153.122366925128
+    },
+    {
+      "name": "Planet 6",
+      "kind": "ice_giant",
+      "mass_kg": 5.5484337359900745e+25,
+      "radius_m": 19556321.992055863,
+      "distance_m": 3952210480582.439,
+      "phase_rad": 4.967120157777025,
+      "period_s": 5516282278.779907,
+      "orbital_speed_mps": 4501.667892885497
+    }
+  ]
+}
