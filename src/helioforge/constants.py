@@ -1,4 +1,12 @@
-"""Physical constants used by helioforge."""
+"""helioforge.constants
+
+Defines physical constants used across helioforge.
+
+These values are kept in a dedicated module to:
+- avoid duplication,
+- provide a single source of truth for shared constants,
+- keep formulas readable in other modules.
+"""
 
 # Gravitational constant (m^3 kg^-1 s^-2)
 G = 6.67430e-11

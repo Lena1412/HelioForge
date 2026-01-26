@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+"""helioforge.generation
+
+Procedural planet generation utilities.
+
+This module provides lightweight helpers to generate plausible (not scientifically
+precise) planetary systems for demos, tests, and visualization.
+"""
+
 import math
 import random
 from typing import List, Optional
@@ -10,9 +18,22 @@ from .kepler import Kepler
 
 
 def kepler_period_s(semi_major_axis_m: float, central_mass_kg: float) -> float:
-    """
-    Kepler's third law (two-body approximation, orbiting mass negligible):
+    """Compute orbital period using Kepler's third law (two-body approximation).
+
+    Assumes the orbiting body's mass is negligible compared to the central mass.
+
+    Formula:
         T = 2π * sqrt(a^3 / (G * M))
+
+    Args:
+        semi_major_axis_m: Semi-major axis (orbital radius for circular orbit) in meters.
+        central_mass_kg: Mass of the central body in kilograms.
+
+    Returns:
+        Orbital period in seconds.
+
+    Raises:
+        ValueError: If `semi_major_axis_m <= 0` or `central_mass_kg <= 0`.
     """
     if semi_major_axis_m <= 0:
         raise ValueError("semi_major_axis_m must be > 0")
@@ -22,7 +43,21 @@ def kepler_period_s(semi_major_axis_m: float, central_mass_kg: float) -> float:
 
 
 def circular_orbit_speed_mps(distance_m: float, period_s: float) -> float:
-    """Circular orbit speed v = 2πr / T."""
+    """Compute circular orbit speed from radius and period.
+
+    Formula:
+        v = 2πr / T
+
+    Args:
+        distance_m: Orbital radius in meters.
+        period_s: Orbital period in seconds.
+
+    Returns:
+        Orbital speed in meters per second.
+
+    Raises:
+        ValueError: If `distance_m <= 0` or `period_s <= 0`.
+    """
     if distance_m <= 0:
         raise ValueError("distance_m must be > 0")
     if period_s <= 0:
@@ -31,6 +66,17 @@ def circular_orbit_speed_mps(distance_m: float, period_s: float) -> float:
 
 
 def _pick_kind(distance_au: float) -> PlanetType:
+    """Choose a rough planet type based on orbital distance.
+
+    This is intentionally simplistic: it exists to generate visually varied
+    systems without implementing a full formation model.
+
+    Args:
+        distance_au: Orbital distance in astronomical units.
+
+    Returns:
+        A PlanetType string ("rocky", "gas_giant", "ice_giant", or "dwarf").
+    """
     # Very simple rule of thumb; keep it minimal.
     if distance_au < 2.0:
         return "rocky"
@@ -42,6 +88,16 @@ def _pick_kind(distance_au: float) -> PlanetType:
 
 
 def _rand_range(rng: random.Random, lo: float, hi: float) -> float:
+    """Sample a float uniformly from [lo, hi].
+
+    Args:
+        rng: Random generator instance.
+        lo: Lower bound.
+        hi: Upper bound.
+
+    Returns:
+        A random float in [lo, hi].
+    """
     return lo + (hi - lo) * rng.random()
 
 
@@ -53,14 +109,29 @@ def generate_planets(
     inner_au: float = 0.4,
     outer_au: float = 40.0,
 ) -> List[Planet]:
-    """
-    Generate a list of planets with increasing orbital distances.
+    """Generate a list of planets with increasing orbital distances.
 
-    Minimal rules:
-    - distances increasing between inner_au and outer_au (log-spaced-ish)
-    - kind determined by distance range
-    - period from Kepler
-    - speed from Kepler (circular orbit)
+    The generation rules are intentionally minimal and aimed at producing
+    stable, visually plausible systems:
+
+    - Orbital radii are roughly log-spaced between `inner_au` and `outer_au`
+      with small jitter.
+    - Planet "kind" is derived from distance bands.
+    - Period and speed use circular-orbit Kepler approximations.
+    - Output is sorted by `distance_m` to enforce monotonically increasing orbits.
+
+    Args:
+        central_body: The star/central mass the planets orbit.
+        n_planets: Number of planets to generate.
+        seed: Optional RNG seed for reproducibility.
+        inner_au: Inner-most orbit distance in AU.
+        outer_au: Outer-most orbit distance in AU.
+
+    Returns:
+        A list of `Planet` objects sorted by orbital distance.
+
+    Raises:
+        ValueError: If `n_planets < 0`, or if `inner_au/outer_au` are invalid.
     """
     if n_planets < 0:
         raise ValueError("n_planets must be >= 0")
@@ -72,6 +143,7 @@ def generate_planets(
     if n_planets == 0:
         return []
 
+    # `Kepler` may use an accelerated native implementation if available.
     kep = Kepler(central_body.mass_kg)
 
     # Log-spaced baseline + small jitter keeps ordering stable and varied.
@@ -80,6 +152,7 @@ def generate_planets(
 
     planets: List[Planet] = []
     for i in range(n_planets):
+        # `t` ranges from 0..1; for n_planets==1, denominator is clamped to 1.
         t = i / max(1, n_planets - 1)
         base_au = math.exp(log_inner + t * (log_outer - log_inner))
         jitter = _rand_range(rng, 0.93, 1.07)
@@ -102,7 +175,7 @@ def generate_planets(
             mass_kg = _rand_range(rng, 0.0001, 0.01) * 5.972e24
             radius_m = _rand_range(rng, 0.05, 0.3) * 6.371e6
 
-        # Prefer native Kepler if available, fallback to Python inside Kepler wrapper.
+        # Period/speed come from `Kepler`, which can be native-accelerated.
         period_s = kep.period_s(distance_m)
         speed_mps = kep.circular_speed_mps(distance_m)
 

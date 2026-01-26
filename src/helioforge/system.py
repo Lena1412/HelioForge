@@ -1,5 +1,15 @@
 from __future__ import annotations
 
+"""helioforge.system
+
+Defines the SolarSystem container and serialization helpers.
+
+The SolarSystem class owns:
+- one `CentralBody`,
+- a list of orbiting `Planet` objects,
+and provides stepping + a JSON-friendly representation.
+"""
+
 from dataclasses import dataclass
 from typing import Iterable, List, Dict, Any, Tuple
 
@@ -8,24 +18,39 @@ from .models import CentralBody, Planet
 
 @dataclass(slots=True)
 class SolarSystem:
-    """A simple heliocentric system: one central body and a set of orbiting planets."""
+    """A simple heliocentric system: one central body and orbiting planets.
+
+    Attributes:
+        central_body: The star/central mass.
+        planets: A list of planets orbiting the central body.
+    """
+
     central_body: CentralBody
     planets: List[Planet]
 
     def step(self, dt_s: float) -> None:
-        """Advance all planets by dt seconds."""
+        """Advance all planets by `dt_s` seconds.
+
+        Args:
+            dt_s: Time step in seconds.
+        """
         for p in self.planets:
             p.step(dt_s)
 
     def state_m(self) -> Dict[str, Tuple[float, float]]:
-        """
-        Current positions in meters.
-        Returns mapping planet_name -> (x_m, y_m)
+        """Get current planet positions in meters.
+
+        Returns:
+            Dict mapping `planet_name -> (x_m, y_m)`.
         """
         return {p.name: p.position_m() for p in self.planets}
 
     def to_dict(self) -> Dict[str, Any]:
-        """Serialize to a JSON-friendly dict."""
+        """Serialize the system to a JSON-friendly dictionary.
+
+        Returns:
+            A dict containing central body properties and a list of planet dicts.
+        """
         cb = self.central_body
         return {
             "central_body": {
@@ -51,5 +76,13 @@ class SolarSystem:
 
     @staticmethod
     def from_planets(central_body: CentralBody, planets: Iterable[Planet]) -> "SolarSystem":
-        """Convenience constructor to accept any iterable."""
+        """Construct a SolarSystem from any iterable of planets.
+
+        Args:
+            central_body: The star/central mass.
+            planets: Any iterable producing `Planet` objects.
+
+        Returns:
+            A SolarSystem containing `central_body` and a list of planets.
+        """
         return SolarSystem(central_body=central_body, planets=list(planets))

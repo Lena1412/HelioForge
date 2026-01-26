@@ -1,5 +1,15 @@
 from __future__ import annotations
 
+"""helioforge.presets
+
+Curated presets for known systems (e.g., a rough Solar System).
+
+These presets are intentionally approximate. They exist for:
+- demos (visualization),
+- notebooks,
+- quick sanity checks.
+"""
+
 from typing import List, Tuple
 
 from .constants import AU_M
@@ -8,10 +18,15 @@ from .models import CentralBody, Planet
 
 
 def make_solar_system() -> Tuple[CentralBody, List[Planet]]:
-    """
-    Return a simple, consistent example resembling our Solar System.
+    """Create a rough Solar System preset (Sun + major planets).
 
-    Not a precision dataset — it exists for demos, notebooks, and sanity tests.
+    This is not a precision dataset. Values are approximate and are meant to be
+    consistent and visually recognizable rather than scientifically exact.
+
+    Returns:
+        A tuple `(sun, planets)` where:
+            - `sun` is a CentralBody
+            - `planets` is a list of Planet objects
     """
     sun = CentralBody(
         name="Sun",
@@ -22,7 +37,7 @@ def make_solar_system() -> Tuple[CentralBody, List[Planet]]:
 
     kep = Kepler(sun.mass_kg)
 
-    # distance in AU; masses/radii are approximate
+    # Distance in AU; masses/radii are approximate scaling factors vs Earth/Jupiter.
     specs = [
         ("Mercury", "rocky", 0.0553 * 5.972e24, 0.383 * 6.371e6, 0.387),
         ("Venus",   "rocky", 0.815  * 5.972e24, 0.949 * 6.371e6, 0.723),
