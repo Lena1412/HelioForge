@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+"""Integration-style tests for system assembly and procedural generation.
+
+These tests validate that:
+- generated planets are well-formed and ordered,
+- generated orbital parameters are positive,
+- and stepping a SolarSystem advances planet phases.
+"""
+
 import pytest
 
 from helioforge import CentralBody, SolarSystem, generate_planets
@@ -7,6 +15,7 @@ from helioforge.constants import AU_M, DAY_S
 
 
 def test_generate_planets_sorted_and_positive():
+    """Generated planets should be sorted by distance and have valid parameters."""
     star = CentralBody(name="Star", mass_kg=1.0e30, radius_m=7.0e8, luminosity_w=0.0)
     planets = generate_planets(star, 10, seed=42, inner_au=0.5, outer_au=20.0)
 
@@ -25,6 +34,7 @@ def test_generate_planets_sorted_and_positive():
 
 
 def test_solar_system_step_moves_planets():
+    """Stepping a SolarSystem should change at least one planet's phase."""
     star = CentralBody(name="Star", mass_kg=1.0e30, radius_m=7.0e8, luminosity_w=0.0)
     planets = generate_planets(star, 3, seed=1, inner_au=1.0, outer_au=2.0)
     system = SolarSystem(central_body=star, planets=planets)

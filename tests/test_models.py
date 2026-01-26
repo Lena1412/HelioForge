@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+"""Tests for core data models.
+
+These tests focus on `Planet` behavior:
+- converting phase + distance to a 2D position,
+- advancing phase over time,
+- and validating time-step input.
+"""
+
 import math
 import pytest
 
@@ -7,6 +15,7 @@ from helioforge.models import Planet
 
 
 def test_planet_position_at_phase_zero():
+    """At phase 0, the planet should lie on the +X axis at (distance, 0)."""
     p = Planet(
         name="P",
         kind="rocky",
@@ -23,6 +32,7 @@ def test_planet_position_at_phase_zero():
 
 
 def test_planet_step_advances_phase():
+    """`step()` should advance phase by ω * dt for the stored period."""
     p = Planet(
         name="P",
         kind="rocky",
@@ -41,6 +51,7 @@ def test_planet_step_advances_phase():
 
 
 def test_planet_step_rejects_negative_dt():
+    """`step()` should reject negative time steps with a ValueError."""
     p = Planet(
         name="P",
         kind="rocky",

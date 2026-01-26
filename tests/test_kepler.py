@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+"""Tests for Kepler-law computations and the optional native backend.
+
+These tests validate:
+- the pure Python formulas,
+- the Kepler wrapper class behavior,
+- and (if available) the native `helioforge_native` implementation.
+"""
+
 import math
 import pytest
 
@@ -8,14 +16,43 @@ from helioforge.kepler import Kepler
 
 
 def py_period(a_m: float, M_kg: float) -> float:
+    """Compute orbital period using the reference Python formula.
+
+    Args:
+        a_m: Semi-major axis (meters).
+        M_kg: Central body mass (kilograms).
+
+    Returns:
+        Orbital period in seconds.
+    """
     return 2.0 * math.pi * math.sqrt((a_m**3) / (G * M_kg))
 
 
 def py_circular_speed(a_m: float, M_kg: float) -> float:
+    """Compute circular-orbit speed using the reference Python formula.
+
+    Args:
+        a_m: Orbital radius (meters).
+        M_kg: Central body mass (kilograms).
+
+    Returns:
+        Orbital speed in meters per second.
+    """
     return math.sqrt((G * M_kg) / a_m)
 
 
 def _native_solver_or_skip():
+    """Return the native KeplerSolver class if available, otherwise skip the test.
+
+    This helper is used to conditionally run native-backend tests only when
+    `helioforge_native` is importable and exposes `KeplerSolver`.
+
+    Returns:
+        The `helioforge_native.KeplerSolver` class.
+
+    Raises:
+        pytest.SkipTest: If the native module/class is not available.
+    """
     try:
         import helioforge_native  # type: ignore
     except Exception:
@@ -28,6 +65,7 @@ def _native_solver_or_skip():
 
 
 def test_kepler_wrapper_matches_formula():
+    """Kepler wrapper should match the analytical two-body formulas."""
     M = 1.9885e30
     a = 1.0 * AU_M
     k = Kepler(M)
@@ -37,6 +75,7 @@ def test_kepler_wrapper_matches_formula():
 
 
 def test_kepler_native_matches_if_available():
+    """Native KeplerSolver should match the analytical formulas (when present)."""
     KeplerSolver = _native_solver_or_skip()
 
     M = 1.9885e30
@@ -48,6 +87,7 @@ def test_kepler_native_matches_if_available():
 
 
 def test_wrapper_uses_native_if_available():
+    """Kepler wrapper should initialize and store a native solver when available."""
     _native_solver_or_skip()
 
     k = Kepler(1.0e30)
