@@ -1,0 +1,51 @@
+[build-system]
+requires = ["scikit-build-core>=0.9", "pybind11>=2.11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "helioforge-cosmoview"
+version = "0.1.0"
+description = "Heliocentric 2D solar system generator + simulation (helioforge) and pygame visualizer (cosmoview)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Lena Szczuczko" }]
+dependencies = [
+  "numpy>=1.24",
+  "pygame>=2.5",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0",
+  "pytest-cov>=4.0",
+  "ruff>=0.4",
+  "mypy>=1.7",
+  "pre-commit>=3.0",
+]
+view = ["pygame>=2.5"]
+notebook = ["jupyter", "matplotlib>=3.7"]
+
+[project.scripts]
+cosmoview = "cosmoview.cli:main"
+
+[tool.scikit-build]
+cmake.version = ">=3.20"
+wheel.packages = ["src/helioforge", "src/cosmoview"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+lint.select = ["E", "F", "I", "B", "UP"]
+lint.ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
