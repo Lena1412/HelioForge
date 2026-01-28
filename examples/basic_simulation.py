@@ -1,7 +1,7 @@
 from helioforge import CentralBody, SolarSystem
+from helioforge.constants import DAY_S
 from helioforge.generation import generate_planets
 from helioforge.simulation import Simulation
-from helioforge.constants import DAY_S
 
 '''
 Purpose: Smallest possible end-to-end HelioForge usage

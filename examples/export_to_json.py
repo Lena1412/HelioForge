@@ -1,4 +1,4 @@
-from helioforge import make_solar_system, SolarSystem
+from helioforge import SolarSystem, make_solar_system
 from helioforge.export import save_json
 
 '''

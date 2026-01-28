@@ -10,7 +10,7 @@ This module provides a small wrapper around `SolarSystem` that:
 """
 
 from dataclasses import dataclass
-from typing import Iterator, Dict, Tuple
+from typing import Dict, Iterator, Tuple
 
 from .system import SolarSystem
 

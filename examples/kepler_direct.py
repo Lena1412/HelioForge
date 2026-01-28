@@ -1,5 +1,5 @@
-from helioforge.kepler import Kepler
 from helioforge.constants import AU_M
+from helioforge.kepler import Kepler
 
 '''
 Purpose: Low-level Kepler usage (Python or native)

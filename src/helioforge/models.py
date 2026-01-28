@@ -8,10 +8,9 @@ The project intentionally models planets as moving on circular 2D orbits
 to keep the system easy to understand and fast to simulate/visualize.
 """
 
-from dataclasses import dataclass, field
 import math
+from dataclasses import dataclass, field
 from typing import Literal, Tuple
-
 
 PlanetType = Literal["rocky", "gas_giant", "ice_giant", "dwarf"]
 

@@ -8,7 +8,6 @@ These tests validate that:
 - and stepping a SolarSystem advances planet phases.
 """
 
-import pytest
 
 from helioforge import CentralBody, SolarSystem, generate_planets
 from helioforge.constants import AU_M, DAY_S

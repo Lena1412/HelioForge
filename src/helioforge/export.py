@@ -11,6 +11,7 @@ import json
 
 from .system import SolarSystem
 
+
 def load_json(path: str) -> SolarSystem:
     """Load a SolarSystem from a JSON file previously created via `save_json()`.
 

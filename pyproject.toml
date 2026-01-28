@@ -38,11 +38,17 @@ cosmoview = "cosmoview.cli:main"
 cmake.version = ">=3.20"
 wheel.packages = ["src/helioforge", "src/cosmoview"]
 
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
 [tool.ruff]
-line-length = 100
-target-version = "py310"
-lint.select = ["E", "F", "I", "B", "UP"]
-lint.ignore = ["E501"]
+line-length = 88
+select = ["E", "F", "I", "B"]
+fix = true
+
+[tool.ruff.isort]
+combine-as-imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

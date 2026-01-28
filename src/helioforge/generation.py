@@ -12,9 +12,9 @@ import math
 import random
 from typing import List, Optional
 
-from .constants import G, AU_M
-from .models import CentralBody, Planet, PlanetType
+from .constants import AU_M, G
 from .kepler import Kepler
+from .models import CentralBody, Planet, PlanetType
 
 
 def kepler_period_s(semi_major_axis_m: float, central_mass_kg: float) -> float:

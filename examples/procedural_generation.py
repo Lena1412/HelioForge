@@ -1,6 +1,6 @@
 from helioforge import CentralBody
-from helioforge.generation import generate_planets
 from helioforge.constants import AU_M
+from helioforge.generation import generate_planets
 
 '''
 Purpose: Demonstrate deterministic procedural generation

@@ -11,7 +11,7 @@ and provides stepping + a JSON-friendly representation.
 """
 
 from dataclasses import dataclass
-from typing import Iterable, List, Dict, Any, Tuple
+from typing import Any, Dict, Iterable, List, Tuple
 
 from .models import CentralBody, Planet
 
@@ -58,7 +58,10 @@ class SolarSystem:
         Raises:
             KeyError: If expected keys are missing.
         """
-        from .models import CentralBody, Planet  # local import to avoid cycles in some setups
+        from .models import (  # local import to avoid cycles in some setups
+            CentralBody,
+            Planet,
+        )
 
         cb = data["central_body"]
         central = CentralBody(

@@ -9,6 +9,7 @@ These tests validate:
 """
 
 import math
+
 import pytest
 
 from helioforge.constants import AU_M, G

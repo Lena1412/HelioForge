@@ -9,6 +9,7 @@ These tests focus on `Planet` behavior:
 """
 
 import math
+
 import pytest
 
 from helioforge.models import Planet
