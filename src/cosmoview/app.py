@@ -18,6 +18,7 @@ stable even when the time scale is high.
 
 import math
 from dataclasses import dataclass, field
+from typing import Optional
 
 import pygame
 
@@ -74,7 +75,14 @@ def _make_font() -> pygame.font.Font:
     return pygame.font.SysFont(["Inter", "Segoe UI", "DejaVu Sans", "Arial", "consolas"], 16)
 
 
-def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str = "solar") -> None:
+def run(
+    *,
+    width: int = 1100,
+    height: int = 800,
+    fps_limit: int = 60,
+    mode: str = "solar",
+    system: Optional[SolarSystem] = None,
+) -> None:
     """Run the CosmoView pygame window.
 
     Args:
@@ -107,13 +115,14 @@ def run(*, width: int = 1100, height: int = 800, fps_limit: int = 60, mode: str 
         """Build a fresh simulation instance for the current mode."""
         return Simulation(_build_demo_system(mode))
 
-    sim = reset_sim()
+    sim = Simulation(system) if system is not None else reset_sim()
 
     def do_reset() -> None:
-        """Reset the current simulation (UI action)."""
         nonlocal sim
-        sim = reset_sim()
-
+        # If the user provided a system, reset means: re-wrap the same system in a fresh Simulation.
+        # This preserves "Reset simulation" semantics without inventing new system-building behavior.
+        sim = Simulation(system) if system is not None else reset_sim()
+        
     def slower() -> None:
         """Decrease the simulation time scale (UI action)."""
         view.time_scale = max(0.1, view.time_scale / 1.25)

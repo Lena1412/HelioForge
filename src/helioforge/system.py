@@ -45,6 +45,46 @@ class SolarSystem:
         """
         return {p.name: p.position_m() for p in self.planets}
 
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "SolarSystem":
+        """Construct a SolarSystem from a JSON-friendly dict produced by `to_dict()`.
+
+        Args:
+            data: Dictionary representation of a SolarSystem.
+
+        Returns:
+            A SolarSystem instance.
+
+        Raises:
+            KeyError: If expected keys are missing.
+        """
+        from .models import CentralBody, Planet  # local import to avoid cycles in some setups
+
+        cb = data["central_body"]
+        central = CentralBody(
+            name=cb["name"],
+            mass_kg=cb["mass_kg"],
+            radius_m=cb["radius_m"],
+            luminosity_w=cb.get("luminosity_w", 0.0),
+        )
+
+        planets = []
+        for p in data["planets"]:
+            planets.append(
+                Planet(
+                    name=p["name"],
+                    kind=p["kind"],
+                    mass_kg=p["mass_kg"],
+                    radius_m=p["radius_m"],
+                    distance_m=p["distance_m"],
+                    phase_rad=p.get("phase_rad", 0.0),
+                    period_s=p.get("period_s", 0.0),
+                    orbital_speed_mps=p.get("orbital_speed_mps", 0.0),
+                )
+            )
+
+        return SolarSystem(central_body=central, planets=planets)
+
     def to_dict(self) -> Dict[str, Any]:
         """Serialize the system to a JSON-friendly dictionary.
 

@@ -11,6 +11,18 @@ import json
 
 from .system import SolarSystem
 
+def load_json(path: str) -> SolarSystem:
+    """Load a SolarSystem from a JSON file previously created via `save_json()`.
+
+    Args:
+        path: Path to a JSON file created from `SolarSystem.to_dict()`.
+
+    Returns:
+        Parsed SolarSystem instance.
+    """
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return SolarSystem.from_dict(data)
 
 def to_json(system: SolarSystem, *, indent: int = 2) -> str:
     """Serialize a SolarSystem to a JSON string.
