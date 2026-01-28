@@ -118,7 +118,9 @@ class SolarSystem:
         }
 
     @staticmethod
-    def from_planets(central_body: CentralBody, planets: Iterable[Planet]) -> "SolarSystem":
+    def from_planets(
+        central_body: CentralBody, planets: Iterable[Planet]
+    ) -> "SolarSystem":
         """Construct a SolarSystem from any iterable of planets.
 
         Args:

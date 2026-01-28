@@ -71,7 +71,11 @@ class Kepler:
         if self._native is not None:
             return float(self._native.period_from_distance(float(semi_major_axis_m)))
 
-        return 2.0 * math.pi * math.sqrt((semi_major_axis_m**3) / (G * self.central_mass_kg))
+        return (
+            2.0
+            * math.pi
+            * math.sqrt((semi_major_axis_m**3) / (G * self.central_mass_kg))
+        )
 
     def circular_speed_mps(self, distance_m: float) -> float:
         """Compute circular orbit speed at a given orbital radius.

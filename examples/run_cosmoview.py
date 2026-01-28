@@ -1,11 +1,11 @@
 from cosmoview.app import run
 
-'''
+"""
 Purpose: Programmatic CosmoView launch
 
 Shows:
 - using the viewer without CLI
-'''
+"""
 
 run(
     width=1200,

@@ -57,7 +57,9 @@ class IconButton:
         """
         return self.enabled and self.rect.collidepoint(mouse_pos)
 
-    def handle_event(self, event: pygame.event.Event, mouse_pos: Tuple[int, int]) -> bool:
+    def handle_event(
+        self, event: pygame.event.Event, mouse_pos: Tuple[int, int]
+    ) -> bool:
         """Handle a single pygame event for this button.
 
         The only handled interaction is a left mouse button press when the
@@ -72,12 +74,18 @@ class IconButton:
         """
         if not self.enabled:
             return False
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.rect.collidepoint(mouse_pos):
+        if (
+            event.type == pygame.MOUSEBUTTONDOWN
+            and event.button == 1
+            and self.rect.collidepoint(mouse_pos)
+        ):
             self.on_click()
             return True
         return False
 
-    def draw(self, screen: pygame.Surface, font: pygame.font.Font, mouse_pos: Tuple[int, int]) -> None:
+    def draw(
+        self, screen: pygame.Surface, font: pygame.font.Font, mouse_pos: Tuple[int, int]
+    ) -> None:
         """Draw the button to the given surface.
 
         Args:
@@ -109,7 +117,12 @@ class IconButton:
         color = fg if self.enabled else disabled
         self._draw_icon(screen, color, font)
 
-    def _draw_icon(self, screen: pygame.Surface, color: Tuple[int, int, int], font: pygame.font.Font) -> None:
+    def _draw_icon(
+        self,
+        screen: pygame.Surface,
+        color: Tuple[int, int, int],
+        font: pygame.font.Font,
+    ) -> None:
         """Render an icon matching `self.kind`.
 
         This intentionally avoids loading external icon assets. Each icon is a
@@ -128,7 +141,11 @@ class IconButton:
         # remain visually consistent as UI scale changes.
         if self.kind == "play":
             size = int(s * 0.34)
-            pts = [(cx - size // 2, cy - size), (cx - size // 2, cy + size), (cx + size, cy)]
+            pts = [
+                (cx - size // 2, cy - size),
+                (cx - size // 2, cy + size),
+                (cx + size, cy),
+            ]
             pygame.draw.polygon(screen, color, pts)
             return
 
@@ -146,7 +163,11 @@ class IconButton:
             size = int(s * 0.26)
             off = int(s * 0.08)
             pts1 = [(cx - off, cy - size), (cx - off, cy + size), (cx + size, cy)]
-            pts2 = [(cx - size - off, cy - size), (cx - size - off, cy + size), (cx - off, cy)]
+            pts2 = [
+                (cx - size - off, cy - size),
+                (cx - size - off, cy + size),
+                (cx - off, cy),
+            ]
             pygame.draw.polygon(screen, color, pts2)
             pygame.draw.polygon(screen, color, pts1)
             return
@@ -155,7 +176,11 @@ class IconButton:
             size = int(s * 0.26)
             off = int(s * 0.08)
             pts1 = [(cx + off, cy - size), (cx + off, cy + size), (cx - size, cy)]
-            pts2 = [(cx + size + off, cy - size), (cx + size + off, cy + size), (cx + off, cy)]
+            pts2 = [
+                (cx + size + off, cy - size),
+                (cx + size + off, cy + size),
+                (cx + off, cy),
+            ]
             pygame.draw.polygon(screen, color, pts2)
             pygame.draw.polygon(screen, color, pts1)
             return
@@ -171,7 +196,12 @@ class IconButton:
             bh = int(s * 0.34)
             r = pygame.Rect(cx - bw // 2, cy - bh // 2, bw, bh)
             pygame.draw.rect(screen, color, r, width=2, border_radius=6)
-            hole = pygame.Rect(r.x + int(bw * 0.12), r.y + int(bh * 0.35), int(bh * 0.18), int(bh * 0.18))
+            hole = pygame.Rect(
+                r.x + int(bw * 0.12),
+                r.y + int(bh * 0.35),
+                int(bh * 0.18),
+                int(bh * 0.18),
+            )
             pygame.draw.ellipse(screen, color, hole, width=2)
             return
 
@@ -197,9 +227,21 @@ class IconButton:
             pygame.draw.line(screen, color, (hx1, hy1), (hx2, hy2), width=3)
 
             line_w = int(s * 0.18)
-            pygame.draw.line(screen, color, (center[0] - line_w // 2, center[1]), (center[0] + line_w // 2, center[1]), width=2)
+            pygame.draw.line(
+                screen,
+                color,
+                (center[0] - line_w // 2, center[1]),
+                (center[0] + line_w // 2, center[1]),
+                width=2,
+            )
             if self.kind == "zoom_in":
-                pygame.draw.line(screen, color, (center[0], center[1] - line_w // 2), (center[0], center[1] + line_w // 2), width=2)
+                pygame.draw.line(
+                    screen,
+                    color,
+                    (center[0], center[1] - line_w // 2),
+                    (center[0], center[1] + line_w // 2),
+                    width=2,
+                )
             return
 
         # Fallback: render the kind string as text (useful during development).
@@ -207,7 +249,12 @@ class IconButton:
         screen.blit(text, (cx - text.get_width() // 2, cy - text.get_height() // 2))
 
 
-def draw_tooltip(screen: pygame.Surface, font: pygame.font.Font, text: str, mouse_pos: Tuple[int, int]) -> None:
+def draw_tooltip(
+    screen: pygame.Surface,
+    font: pygame.font.Font,
+    text: str,
+    mouse_pos: Tuple[int, int],
+) -> None:
     """Draw a tooltip bubble near the mouse cursor.
 
     The tooltip is kept on-screen by clamping its rect to the current window

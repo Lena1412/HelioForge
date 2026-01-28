@@ -62,7 +62,11 @@ class StatsPanel:
         gap = 4
 
         w = max(s.get_width() for s in rendered) + 2 * padding_x
-        h = sum(s.get_height() for s in rendered) + 2 * padding_y + gap * (len(rendered) - 1)
+        h = (
+            sum(s.get_height() for s in rendered)
+            + 2 * padding_y
+            + gap * (len(rendered) - 1)
+        )
 
         x, y = top_left
         rect = pygame.Rect(x, y, w, h)

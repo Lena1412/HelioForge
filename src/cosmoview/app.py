@@ -65,14 +65,18 @@ def _build_demo_system(mode: str) -> SolarSystem:
         sun, planets = make_solar_system()
         return SolarSystem(central_body=sun, planets=planets)
 
-    star = CentralBody(name="DemoStar", mass_kg=1.2e30, radius_m=7.0e8, luminosity_w=2.0e26)
+    star = CentralBody(
+        name="DemoStar", mass_kg=1.2e30, radius_m=7.0e8, luminosity_w=2.0e26
+    )
     planets = generate_planets(star, 8, seed=123, inner_au=0.3, outer_au=40.0)
     return SolarSystem(central_body=star, planets=planets)
 
 
 def _make_font() -> pygame.font.Font:
     """Create a UI font with a small fallback list."""
-    return pygame.font.SysFont(["Inter", "Segoe UI", "DejaVu Sans", "Arial", "consolas"], 16)
+    return pygame.font.SysFont(
+        ["Inter", "Segoe UI", "DejaVu Sans", "Arial", "consolas"], 16
+    )
 
 
 def run(
@@ -122,7 +126,7 @@ def run(
         # If the user provided a system, reset means: re-wrap the same system in a fresh Simulation.
         # This preserves "Reset simulation" semantics without inventing new system-building behavior.
         sim = Simulation(system) if system is not None else reset_sim()
-        
+
     def slower() -> None:
         """Decrease the simulation time scale (UI action)."""
         view.time_scale = max(0.1, view.time_scale / 1.25)
@@ -184,14 +188,30 @@ def run(
     right_rects = rects_from(right_x, len(right_kinds))
 
     buttons: list[IconButton] = [
-        IconButton(left_rects[0], "stop", do_reset, "Reset simulation", shortcut_hint="R"),
-        IconButton(left_rects[1], "labels", toggle_labels, "Toggle labels", shortcut_hint="S"),
-        IconButton(left_rects[2], "stats", toggle_stats, "Toggle statistics", shortcut_hint="T"),
+        IconButton(
+            left_rects[0], "stop", do_reset, "Reset simulation", shortcut_hint="R"
+        ),
+        IconButton(
+            left_rects[1], "labels", toggle_labels, "Toggle labels", shortcut_hint="S"
+        ),
+        IconButton(
+            left_rects[2], "stats", toggle_stats, "Toggle statistics", shortcut_hint="T"
+        ),
         IconButton(center_rects[0], "rew", slower, "Slower", shortcut_hint="-"),
-        IconButton(center_rects[1], "pause", toggle_pause, "Play / Pause", shortcut_hint="SPACE"),
+        IconButton(
+            center_rects[1],
+            "pause",
+            toggle_pause,
+            "Play / Pause",
+            shortcut_hint="SPACE",
+        ),
         IconButton(center_rects[2], "ff", faster, "Faster", shortcut_hint="+"),
-        IconButton(right_rects[0], "zoom_out", zoom_out, "Zoom out", shortcut_hint="Wheel down"),
-        IconButton(right_rects[1], "zoom_in", zoom_in, "Zoom in", shortcut_hint="Wheel up"),
+        IconButton(
+            right_rects[0], "zoom_out", zoom_out, "Zoom out", shortcut_hint="Wheel down"
+        ),
+        IconButton(
+            right_rects[1], "zoom_in", zoom_in, "Zoom in", shortcut_hint="Wheel up"
+        ),
     ]
 
     # Maximum simulated seconds per substep. Large time_scale values can
@@ -270,16 +290,29 @@ def run(
 
         world.fill(bg)
 
-        center = pygame.Vector2(view.cam_px.x * render_scale, view.cam_px.y * render_scale)
+        center = pygame.Vector2(
+            view.cam_px.x * render_scale, view.cam_px.y * render_scale
+        )
 
         sun_r_px = ScaleModel.clamp_radius_px(10 * view.zoom, 6, 18) * render_scale
-        pygame.draw.circle(world, (255, 210, 80), (int(center.x), int(center.y)), int(sun_r_px))
+        pygame.draw.circle(
+            world, (255, 210, 80), (int(center.x), int(center.y)), int(sun_r_px)
+        )
 
         orbit_width = max(1, render_scale)
 
         for p in sim.system.planets:
-            orbit_r_px = max(1.0, scale.meters_to_pixels_radius(p.distance_m, view.zoom)) * render_scale
-            pygame.draw.circle(world, (40, 40, 65), (int(center.x), int(center.y)), int(orbit_r_px), width=orbit_width)
+            orbit_r_px = (
+                max(1.0, scale.meters_to_pixels_radius(p.distance_m, view.zoom))
+                * render_scale
+            )
+            pygame.draw.circle(
+                world,
+                (40, 40, 65),
+                (int(center.x), int(center.y)),
+                int(orbit_r_px),
+                width=orbit_width,
+            )
 
             # Convert the planet's model-space position to a unit direction and
             # then scale by the orbit radius in pixels.
@@ -305,7 +338,9 @@ def run(
         if view.show_labels:
             center_ui = view.cam_px
             for p in sim.system.planets:
-                orbit_r_px = max(1.0, scale.meters_to_pixels_radius(p.distance_m, view.zoom))
+                orbit_r_px = max(
+                    1.0, scale.meters_to_pixels_radius(p.distance_m, view.zoom)
+                )
                 x_m, y_m = p.position_m()
                 r_m = math.hypot(x_m, y_m)
                 ux, uy = (x_m / r_m, y_m / r_m) if r_m > 0 else (0.0, 0.0)
@@ -344,7 +379,11 @@ def run(
 
             b.draw(screen, ui_font, mouse_pos)
             if hovered_tooltip is None and b.is_hovered(mouse_pos):
-                hovered_tooltip = f"{b.tooltip}\nShortcut: {b.shortcut_hint}" if b.shortcut_hint else b.tooltip
+                hovered_tooltip = (
+                    f"{b.tooltip}\nShortcut: {b.shortcut_hint}"
+                    if b.shortcut_hint
+                    else b.tooltip
+                )
 
         if hovered_tooltip:
             draw_tooltip(screen, ui_font, hovered_tooltip, mouse_pos)

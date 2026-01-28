@@ -114,7 +114,9 @@ class Planet:
             raise ValueError("dt_s must be >= 0")
 
         # Use modulo to keep phase bounded in [0, 2π), preventing growth over time.
-        self.phase_rad = (self.phase_rad + self.angular_speed_rad_s() * dt_s) % (2.0 * math.pi)
+        self.phase_rad = (self.phase_rad + self.angular_speed_rad_s() * dt_s) % (
+            2.0 * math.pi
+        )
 
     def recalc_speed_from_period(self) -> None:
         """Recompute circular-orbit speed from the stored orbital period.

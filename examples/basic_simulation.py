@@ -3,14 +3,14 @@ from helioforge.constants import DAY_S
 from helioforge.generation import generate_planets
 from helioforge.simulation import Simulation
 
-'''
+"""
 Purpose: Smallest possible end-to-end HelioForge usage
 
 Shows:
 - manual system creation
 - simulation stepping
 - reading positions
-'''
+"""
 
 star = CentralBody(
     name="DemoStar",

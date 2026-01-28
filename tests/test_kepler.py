@@ -84,7 +84,9 @@ def test_kepler_native_matches_if_available():
     native = KeplerSolver(M)
 
     assert native.period_from_distance(a) == pytest.approx(py_period(a, M), rel=1e-10)
-    assert native.circular_speed_from_distance(a) == pytest.approx(py_circular_speed(a, M), rel=1e-10)
+    assert native.circular_speed_from_distance(a) == pytest.approx(
+        py_circular_speed(a, M), rel=1e-10
+    )
 
 
 def test_wrapper_uses_native_if_available():

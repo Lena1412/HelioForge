@@ -25,6 +25,7 @@ def load_json(path: str) -> SolarSystem:
         data = json.load(f)
     return SolarSystem.from_dict(data)
 
+
 def to_json(system: SolarSystem, *, indent: int = 2) -> str:
     """Serialize a SolarSystem to a JSON string.
 

@@ -2,14 +2,14 @@ from helioforge import CentralBody
 from helioforge.constants import AU_M
 from helioforge.generation import generate_planets
 
-'''
+"""
 Purpose: Demonstrate deterministic procedural generation
 
 Shows:
 - seed usage
 - inner/outer bounds
 - planet metadata
-'''
+"""
 
 star = CentralBody(
     name="ProceduralStar",
@@ -28,7 +28,5 @@ planets = generate_planets(
 
 for p in planets:
     print(
-        f"{p.name:8} | "
-        f"type={p.kind:10} | "
-        f"distance={p.distance_m / AU_M:.2f} AU"
+        f"{p.name:8} | " f"type={p.kind:10} | " f"distance={p.distance_m / AU_M:.2f} AU"
     )

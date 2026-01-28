@@ -40,12 +40,12 @@ def make_solar_system() -> Tuple[CentralBody, List[Planet]]:
     # Distance in AU; masses/radii are approximate scaling factors vs Earth/Jupiter.
     specs = [
         ("Mercury", "rocky", 0.0553 * 5.972e24, 0.383 * 6.371e6, 0.387),
-        ("Venus",   "rocky", 0.815  * 5.972e24, 0.949 * 6.371e6, 0.723),
-        ("Earth",   "rocky", 1.0    * 5.972e24, 1.0   * 6.371e6, 1.000),
-        ("Mars",    "rocky", 0.107  * 5.972e24, 0.532 * 6.371e6, 1.524),
+        ("Venus", "rocky", 0.815 * 5.972e24, 0.949 * 6.371e6, 0.723),
+        ("Earth", "rocky", 1.0 * 5.972e24, 1.0 * 6.371e6, 1.000),
+        ("Mars", "rocky", 0.107 * 5.972e24, 0.532 * 6.371e6, 1.524),
         ("Jupiter", "gas_giant", 1.0 * 1.898e27, 1.0 * 6.9911e7, 5.204),
-        ("Saturn",  "gas_giant", 0.299 * 1.898e27, 0.843 * 6.9911e7, 9.582),
-        ("Uranus",  "ice_giant", 8.681e25, 2.5362e7, 19.201),
+        ("Saturn", "gas_giant", 0.299 * 1.898e27, 0.843 * 6.9911e7, 9.582),
+        ("Uranus", "ice_giant", 8.681e25, 2.5362e7, 19.201),
         ("Neptune", "ice_giant", 1.024e26, 2.4622e7, 30.047),
     ]
 
