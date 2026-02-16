@@ -1,4 +1,7 @@
-from __future__ import annotations
+# function to create an example (our solar systemt)
+# initially called arcane_plane
+# at first it generated a simple system with one star and 3 planets
+# it was changed to make it more fancy 
 
 """helioforge.presets
 
@@ -9,6 +12,7 @@ These presets are intentionally approximate. They exist for:
 - notebooks,
 - quick sanity checks.
 """
+from __future__ import annotations
 
 from typing import List, Tuple
 

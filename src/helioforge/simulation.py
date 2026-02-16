@@ -1,4 +1,6 @@
-from __future__ import annotations
+# class that "moves the time forward" in the simulation
+# initially called astroclock
+
 
 """helioforge.simulation
 
@@ -8,6 +10,7 @@ This module provides a small wrapper around `SolarSystem` that:
 - advances time,
 - exposes an iterator interface for consumers like viewers/exporters.
 """
+from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Dict, Iterator, Tuple

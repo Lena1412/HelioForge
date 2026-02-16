@@ -1,4 +1,9 @@
-from __future__ import annotations
+# models of the celestial bodies (stars and planets)
+# initially split into two separate files for each class (sol_core and world_shard)
+# later combined into one file initially named celestial_bodies
+# name changed to make it shorter and simpler
+# the planet types are based solely on the distance from the central star
+# and only change the color of the planet when it is displayed
 
 """helioforge.models
 
@@ -7,6 +12,7 @@ Core data models for helioforge's simple heliocentric simulation.
 The project intentionally models planets as moving on circular 2D orbits
 to keep the system easy to understand and fast to simulate/visualize.
 """
+from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field

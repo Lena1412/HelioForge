@@ -1,4 +1,6 @@
-from __future__ import annotations
+# generation helper functions 
+# such as a function for picking the planet type based on the distance from the central body
+# and also the random planet generator added later on
 
 """helioforge.generation
 
@@ -7,6 +9,7 @@ Procedural planet generation utilities.
 This module provides lightweight helpers to generate plausible (not scientifically
 precise) planetary systems for demos, tests, and visualization.
 """
+from __future__ import annotations
 
 import math
 import random

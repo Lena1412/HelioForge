@@ -1,3 +1,7 @@
+# this file did not exist initially
+# it was added in order not to define the constants multiple times
+# and to make the project seem more professional
+
 """helioforge.constants
 
 Defines physical constants used across helioforge.

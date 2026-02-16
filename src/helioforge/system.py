@@ -1,4 +1,7 @@
-from __future__ import annotations
+# the class for the solar system containing the central star and palnets
+# initially called astral_weave
+# it was later on modified a bit to be JSON-friendly
+# and the JSON import/export options were added later in the project
 
 """helioforge.system
 
@@ -9,6 +12,7 @@ The SolarSystem class owns:
 - a list of orbiting `Planet` objects,
 and provides stepping + a JSON-friendly representation.
 """
+from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Tuple

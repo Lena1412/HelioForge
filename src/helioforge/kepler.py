@@ -1,4 +1,8 @@
-from __future__ import annotations
+# also one of the first files created in this version of the code
+# it contains the math necessary to describe the system in a very much simplified manner
+# at first the math was supposed to be included in the planet class
+# but since I also needed the C++ version
+# I decided to put it in a separate class
 
 """helioforge.kepler
 
@@ -8,6 +12,7 @@ If `helioforge_native` is importable at runtime, this module will use a native
 (C++-backed) solver for performance. Otherwise, it falls back to pure Python
 formulas (sufficient for demos and small simulations).
 """
+from __future__ import annotations
 
 import math
 from typing import Optional

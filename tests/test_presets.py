@@ -1,6 +1,7 @@
-from __future__ import annotations
+
 
 """Tests for preset system builders (e.g., a rough Solar System)."""
+from __future__ import annotations
 
 import pytest
 

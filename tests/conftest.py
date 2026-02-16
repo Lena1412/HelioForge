@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 """Pytest configuration for the repository.
 
@@ -6,6 +5,7 @@ This conftest adjusts `sys.path` so tests import the package from `src/`
 rather than accidentally importing from the repository root or an installed
 version. This matches typical `src/`-layout best practices.
 """
+from __future__ import annotations
 
 import sys
 from pathlib import Path

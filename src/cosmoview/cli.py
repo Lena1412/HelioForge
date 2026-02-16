@@ -1,3 +1,7 @@
+# commandline usage
+# one of the last things besides docs and examples to be added
+# it was something I wanted to try even before starting this project in my work
+
 # src/cosmoview/cli.py
 from __future__ import annotations
 

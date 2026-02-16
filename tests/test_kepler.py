@@ -1,4 +1,4 @@
-from __future__ import annotations
+
 
 """Tests for Kepler-law computations and the optional native backend.
 
@@ -7,6 +7,7 @@ These tests validate:
 - the Kepler wrapper class behavior,
 - and (if available) the native `helioforge_native` implementation.
 """
+from __future__ import annotations
 
 import math
 

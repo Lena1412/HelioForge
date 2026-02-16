@@ -1,4 +1,6 @@
-from __future__ import annotations
+# one of the last additions
+# used for importing/exporting the systems with JSON
+# along with it came the additions to the SOlarSystem class
 
 """helioforge.export
 
@@ -6,6 +8,7 @@ Small helpers for exporting helioforge objects to JSON.
 
 This module currently supports SolarSystem serialization via its `to_dict()` method.
 """
+from __future__ import annotations
 
 import json
 

@@ -1,3 +1,7 @@
+# scaling helpers
+# not initally planned
+# added since view the whole system was tricky at first due to the distances
+
 # src/cosmoview/scaling.py
 from __future__ import annotations
 

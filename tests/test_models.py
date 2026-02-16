@@ -1,4 +1,4 @@
-from __future__ import annotations
+
 
 """Tests for core data models.
 
@@ -7,6 +7,7 @@ These tests focus on `Planet` behavior:
 - advancing phase over time,
 - and validating time-step input.
 """
+from __future__ import annotations
 
 import math
 

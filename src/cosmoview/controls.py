@@ -1,3 +1,9 @@
+# controls for the UI
+# a button class and a tooltip for the pygame app
+# stored in the ui file before
+# separated to make the code structure cleaner but more complex
+
+
 # src/cosmoview/controls.py
 from __future__ import annotations
 

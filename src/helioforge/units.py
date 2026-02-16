@@ -1,3 +1,6 @@
+# named helper initially and meant to hold many helper functions
+# changed to only contain the unit helper
+
 """helioforge.units
 
 Tiny unit/math helpers (kept minimal on purpose).

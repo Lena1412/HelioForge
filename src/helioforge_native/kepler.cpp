@@ -1,3 +1,7 @@
+// created once the python core was fully functioning but before the visualisation
+// it does the same thing as the pythonic kepler but in C++ so it's faster
+// the math here however is so simple that for human user the difference is negligible
+
 // src/helioforge_native/kepler.cpp
 //
 // Native Kepler solver for helioforge.

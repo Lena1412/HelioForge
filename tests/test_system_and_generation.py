@@ -1,4 +1,4 @@
-from __future__ import annotations
+
 
 """Integration-style tests for system assembly and procedural generation.
 
@@ -7,7 +7,7 @@ These tests validate that:
 - generated orbital parameters are positive,
 - and stepping a SolarSystem advances planet phases.
 """
-
+from __future__ import annotations
 
 from helioforge import CentralBody, SolarSystem, generate_planets
 from helioforge.constants import AU_M, DAY_S

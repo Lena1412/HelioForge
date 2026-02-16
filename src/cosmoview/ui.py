@@ -1,3 +1,8 @@
+# stats panel
+# added later on to display the info about the visualisation
+# at first also stored the controls
+
+
 # src/cosmoview/ui.py
 from __future__ import annotations
 

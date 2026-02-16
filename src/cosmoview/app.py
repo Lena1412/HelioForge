@@ -1,3 +1,8 @@
+# the main file for the visualisation
+# defines the pygame app
+# kept simple at first (just the visualisation of the system)
+# the UI interactions were added later on
+
 # src/cosmoview/app.py
 from __future__ import annotations
 

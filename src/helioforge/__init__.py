@@ -1,3 +1,7 @@
+# init file
+# one of the first ones to be created
+# further developed as the project grew
+
 from .generation import generate_planets, kepler_period_s
 from .kepler import Kepler
 from .models import CentralBody, Planet, Sun
